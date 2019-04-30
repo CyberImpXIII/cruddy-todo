@@ -60,14 +60,27 @@ exports.readOne = (id, callback) => {
 };
 
 exports.update = (id, text, callback) => {
-  var item = items[id];
-  if (!item) {
-    callback(new Error(`No item with id: ${id}`));
-  } else {
-    items[id] = text;
-    callback(null, { id, text });
-  }
+  exports.readAll((err, files) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (_.some(files, (file)=>{ return file.id === id; }) === false) {
+        callback(new Error(`No item with id: ${id}`));
+      } else {
+        name = exports.dataDir + '/' + id + '.txt';
+        fs.writeFile(name, text, (err)=>{
+          if (err) {
+            throw err;
+          } else {
+            let todo = { 'id': id, text };
+            callback(null, todo);
+          }
+        });
+      }  
+    }      
+  });
 };
+
 
 exports.delete = (id, callback) => {
   var item = items[id];
