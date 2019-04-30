@@ -9,16 +9,16 @@ var items = {};
 
 exports.create = (text, callback) => {
   counter.getNextUniqueId((err, data)=>{
-    if(err){
+    if (err) {
       console.log(err);
     } else {
       name = exports.dataDir + '/' + data + '.txt';
       //console.log("data", data,"text", text, "name", name,"typeof name", typeof name);
       fs.writeFile(name, text, (err)=>{
-        if(err){
+        if(err) {
           throw err;
         } else {
-          let todo = {id : data, text};
+          let todo = {id: data, text};
           callback(null, todo);
         }
       });
@@ -27,10 +27,10 @@ exports.create = (text, callback) => {
 };
 
 exports.readAll = (callback) => {
-  fs.readdir(exports.dataDir,(err, files)=>{
-    if(err){
+  fs.readdir(exports.dataDir, (err, files)=>{
+    if (err) {
       console.log(err);
-    }else{
+    } else {
       let data = files.map((file)=>{
         return {'id': file.split('.')[0], 'text': file.split('.')[0]};
       });
@@ -41,17 +41,17 @@ exports.readAll = (callback) => {
 
 exports.readOne = (id, callback) => {
   exports.readAll((err, files) => {
-    if(err){
+    if (err) {
       console.log(err);
-    }else{
-      if(_.some(files, (file)=>{return file.id===id;})===false){
+    } else {
+      if (_.some(files, (file)=>{ return file.id === id; }) === false) {
         callback(new Error(`No item with id: ${id}`));
-      }else{
-        fs.readFile(exports.dataDir + '/' + id + '.txt', (err,data) =>{
-          if(err){
+      } else {
+        fs.readFile(exports.dataDir + '/' + id + '.txt', (err, data) =>{
+          if (err) {
             console.log(err);
-          }else{
-            callback(null, {"id" : id, "text" : data.toString()});
+          } else {
+            callback(null, {'id': id, 'text': data.toString()});
           }
         });
       }
