@@ -15,7 +15,7 @@ exports.create = (text, callback) => {
       name = exports.dataDir + '/' + data + '.txt';
       //console.log("data", data,"text", text, "name", name,"typeof name", typeof name);
       fs.writeFile(name, text, (err)=>{
-        if(err) {
+        if (err) {
           throw err;
         } else {
           let todo = {id: data, text};
